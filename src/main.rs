@@ -1,15 +1,19 @@
 #![feature(plugin)]
 #![plugin(rocket_codegen)]
 
+extern crate diesel;
+
 extern crate rocket;
 extern crate todo_app;
 
 use todo_app::todos;
+use todo_app::db::init_pool;
 
 fn main() {
     rocket::ignite()
+        .manage(init_pool())
         .mount("/", routes![todo_app::index])
-        .mount("/todos", routes![todos::new])
+        .mount("/todos", routes![todos::all, todos::new])
         .launch();
 }
 
