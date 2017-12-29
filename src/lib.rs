@@ -21,5 +21,5 @@ use db::init_pool;
 pub fn bootstrap_rocket(connection_string: &str) -> Rocket {
     rocket::ignite()
         .manage(init_pool(connection_string))
-        .mount("/todos", routes![todos::all, todos::new])
+        .mount("/todo", routes![todos::all, todos::get, todos::new])
 }
