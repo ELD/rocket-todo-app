@@ -18,8 +18,14 @@ use rocket::Rocket;
 
 use db::init_pool;
 
+#[get("/")]
+pub fn index_route() -> &'static str {
+    "Hello, Rocket on Docker!"
+}
+
 pub fn bootstrap_rocket(connection_string: &str) -> Rocket {
     rocket::ignite()
         .manage(init_pool(connection_string))
+        .mount("/", routes![index_route])
         .mount("/todo", routes![todos::all, todos::get, todos::new])
 }
