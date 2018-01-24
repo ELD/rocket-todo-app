@@ -3,7 +3,7 @@
 
 extern crate diesel;
 extern crate rocket;
-extern crate todo_app;
+extern crate libtodo;
 
 use std::io::Error;
 

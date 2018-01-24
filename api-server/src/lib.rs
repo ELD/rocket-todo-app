@@ -6,7 +6,6 @@
 
 extern crate rocket;
 extern crate rocket_contrib;
-extern crate r2d2_diesel;
 extern crate r2d2;
 
 pub mod todos;
@@ -27,5 +26,5 @@ pub fn bootstrap_rocket(connection_string: &str) -> Rocket {
     rocket::ignite()
         .manage(init_pool(connection_string))
         .mount("/", routes![index_route])
-        .mount("/todo", routes![todos::all, todos::get, todos::new])
+        .mount("/todo", todos::routes())
 }

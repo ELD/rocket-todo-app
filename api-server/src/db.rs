@@ -5,8 +5,7 @@ use rocket::request::{self, FromRequest};
 use rocket::{Request, State, Outcome};
 
 use diesel::PgConnection;
-use r2d2_diesel::ConnectionManager;
-use r2d2::Pool;
+use diesel::r2d2::{ConnectionManager, Pool};
 
 type ConnectionPool = ::r2d2::Pool<ConnectionManager<PgConnection>>;
 

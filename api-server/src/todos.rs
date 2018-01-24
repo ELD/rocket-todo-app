@@ -6,6 +6,7 @@ use super::db::DbConn;
 use diesel::*;
 use rocket_contrib::Json;
 
+use rocket::Route;
 use rocket::response::{content, status};
 use rocket::http::Status;
 
@@ -20,8 +21,15 @@ pub fn get<'a>(todo_id: i32, conn: DbConn) -> Result<status::Custom<Json<Todo>>,
 
     match todo {
         Ok(todo) => Ok(status::Custom(Status::Ok, Json(todo))),
-        Err(_) => Err(status::NotFound(content::Json("{\"status\":404,\"reason\":\"resource not found\"}"))),
+        Err(_) => Err(status::NotFound(content::Json("{'status':404,'reason':'resource not found'}"))),
     }
+}
+
+#[put("/<todo_id>", format = "application/json", data = "<todo_update>")]
+pub fn update<'a>(todo_id: i32, todo_update: Json<NewTodo>, conn: DbConn) -> Result<(), status::NotFound<content::Json<&'a str>>> {
+    ::diesel::update(todo.find(todo_id)).set(&todo_update);
+
+    Ok(())
 }
 
 #[post("/", format = "application/json", data = "<new_todo>")]
@@ -32,4 +40,8 @@ pub fn new<'a>(conn: DbConn, new_todo: Json<NewTodo>) -> status::Created<&'a str
         .expect("Error saving new todo");
 
     status::Created(format!("localhost:8080/todo/{}", todo.id), None)
+}
+
+pub fn routes() -> Vec<Route> {
+    routes![all, get, new, update]
 }

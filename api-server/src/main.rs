@@ -1,14 +1,14 @@
 #![feature(plugin)]
 #![plugin(rocket_codegen)]
 
-extern crate todo_app;
+extern crate libtodo;
 extern crate dotenv;
 
 use std::env;
 
 use dotenv::dotenv;
 
-use todo_app::bootstrap_rocket;
+use libtodo::bootstrap_rocket;
 
 fn main() {
     dotenv().ok();
