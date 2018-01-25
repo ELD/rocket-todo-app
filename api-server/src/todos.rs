@@ -27,7 +27,10 @@ pub fn get<'a>(todo_id: i32, conn: DbConn) -> Result<status::Custom<Json<Todo>>,
 
 #[put("/<todo_id>", format = "application/json", data = "<todo_update>")]
 pub fn update<'a>(todo_id: i32, todo_update: Json<NewTodo>, conn: DbConn) -> Result<(), status::NotFound<content::Json<&'a str>>> {
-    ::diesel::update(todo.find(todo_id)).set(&todo_update);
+    ::diesel::update(todo_dsl.find(todo_id))
+        .set(&todo_update.into_inner())
+        .get_result::<Todo>(&*conn)
+        .expect("Could not update todo");
 
     Ok(())
 }

@@ -10,7 +10,7 @@ pub struct Todo {
     pub completed: bool,
 }
 
-#[derive(Serialize, Deserialize, Insertable, Debug, Clone)]
+#[derive(Serialize, Deserialize, Insertable, Debug, Clone, AsChangeset)]
 #[table_name = "todo"]
 pub struct NewTodo {
     pub description: String,
